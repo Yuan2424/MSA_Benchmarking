@@ -1,0 +1,4 @@
+Aligner,Mean_SP,Median_SP,StdDev_SP,Mean_TC,Median_TC,StdDev_TC
+clustal,0.7021,0.7836,0.2074,0.2482,0.2351,0.1585
+mafft,0.6548,0.7369,0.228,0.1962,0.1776,0.144
+muscle,0.7191,0.7942,0.1998,0.2465,0.2473,0.1596

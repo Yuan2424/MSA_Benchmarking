@@ -2,6 +2,9 @@ import subprocess
 from pathlib import Path
 from Bio import AlignIO
 from score import score_all_alignments
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 REFERENCE_DIR = Path("References")
 
@@ -104,28 +107,53 @@ def run_muscle(input_file):
 
 def main():
 
+    # Load the results
+    df = pd.read_csv("Results/alignment_scores.csv")
+
+    sns.boxplot(data=df, x="Aligner", y="SP")
+
+    plt.title("SP Scores by Aligner")
+    plt.xlabel("Aligner")
+    plt.ylabel("SP Score")
+
+    plt.show()
+
+    # summary = (
+    #     df.groupby("Aligner")
+    #     .agg(
+    #         Mean_SP=("SP", "mean"),
+    #         Median_SP=("SP", "median"),
+    #         StdDev_SP=("SP", "std"),
+    #         Mean_TC=("TC", "mean"),
+    #         Median_TC=("TC", "median"),
+    #         StdDev_TC=("TC", "std")
+    #     )
+    #     .round(4)
+    # )
+
+    # summary.to_csv("Results/summary_statistics.csv")
+
+    """One time runs
+
+    tfa_list = make_tfa_list()
     score_all_alignments()
 
-    # tfa_list = make_tfa_list()
-
-    # One time runs
-
-    # Convert all MSF reference files to FASTA
-    # convert_all_references()
+    Convert all MSF reference files to FASTA
+    convert_all_references()
     
-    # Convert all Clustal alignments to FASTA
-    # for tfa_file in tfa_list:
-    #     edit_file = tfa_file.replace("Data", "Clustal_raw").replace(".tfa", ".aln-clustal")
-    #     convert_clustal_to_fasta(edit_file)    
+    Convert all Clustal alignments to FASTA
+    for tfa_file in tfa_list:
+        edit_file = tfa_file.replace("Data", "Clustal_raw").replace(".tfa", ".aln-clustal")
+        convert_clustal_to_fasta(edit_file)    
     
-    # Run MAFFT and MUSCLE on all TFA files
-    # for tfa_file in tfa_list:
-    #     print(f"Processing file: {tfa_file}")
-    #     mafft_output = run_mafft(tfa_file)
-    #     print(f"MAFFT output saved to: {mafft_output}")
+    Run MAFFT and MUSCLE on all TFA files
+    for tfa_file in tfa_list:
+        print(f"Processing file: {tfa_file}")
+        mafft_output = run_mafft(tfa_file)
+        print(f"MAFFT output saved to: {mafft_output}")
 
-    #     muscle_output = run_muscle(tfa_file)
-    #     print(f"MUSCLE output saved to: {muscle_output}")
+        muscle_output = run_muscle(tfa_file)
+        print(f"MUSCLE output saved to: {muscle_output}")"""
 
 if __name__ == "__main__":
     main()
