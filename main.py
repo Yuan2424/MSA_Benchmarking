@@ -5,6 +5,7 @@ from score import score_all_alignments
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from friedman import analyze_metric
 
 REFERENCE_DIR = Path("References")
 
@@ -118,35 +119,47 @@ def main():
 
     plt.show()
 
-    # summary = (
-    #     df.groupby("Aligner")
-    #     .agg(
-    #         Mean_SP=("SP", "mean"),
-    #         Median_SP=("SP", "median"),
-    #         StdDev_SP=("SP", "std"),
-    #         Mean_TC=("TC", "mean"),
-    #         Median_TC=("TC", "median"),
-    #         StdDev_TC=("TC", "std")
-    #     )
-    #     .round(4)
-    # )
+    for metric in ["SP", "TC"]:
+        results = analyze_metric("Results/alignment_scores.csv", metric)
 
-    # summary.to_csv("Results/summary_statistics.csv")
+        print(f"\nFriedman Test ({metric})")
+        print("-" * 30)
+        print(f"Chi-square : {results['friedman_chi2']:.4f}")
+        print(f"P-value    : {results['pvalue']:.6f}")
+        print(f"Kendall's W: {results['kendalls_w']:.4f}")
 
     """One time runs
 
+    summary_statistics.csv writing:
+    summary = (
+        df.groupby("Aligner")
+        .agg(
+            Mean_SP=("SP", "mean"),
+            Median_SP=("SP", "median"),
+            StdDev_SP=("SP", "std"),
+            Mean_TC=("TC", "mean"),
+            Median_TC=("TC", "median"),
+            StdDev_TC=("TC", "std")
+        )
+        .round(4)
+    )
+    summary.to_csv("Results/summary_statistics.csv")
+
+    Making a list of the TFA files:
     tfa_list = make_tfa_list()
+
+    Writing to the alignment_scores.csv file:
     score_all_alignments()
 
-    Convert all MSF reference files to FASTA
+    Convert all MSF reference files to FASTA:
     convert_all_references()
     
-    Convert all Clustal alignments to FASTA
+    Convert all Clustal alignments to FASTA:
     for tfa_file in tfa_list:
         edit_file = tfa_file.replace("Data", "Clustal_raw").replace(".tfa", ".aln-clustal")
         convert_clustal_to_fasta(edit_file)    
     
-    Run MAFFT and MUSCLE on all TFA files
+    Run MAFFT and MUSCLE on all TFA files:
     for tfa_file in tfa_list:
         print(f"Processing file: {tfa_file}")
         mafft_output = run_mafft(tfa_file)
