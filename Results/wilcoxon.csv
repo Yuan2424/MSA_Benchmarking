@@ -1,0 +1,7 @@
+Metric,Comparison,Statistic,Raw p-value,Adjusted p-value,Significant
+SP,clustal vs mafft,2.0,0.00146484375,0.00439453125,True
+SP,clustal vs muscle,14.0,0.05224609375,0.05224609375,False
+SP,mafft vs muscle,2.0,0.00146484375,0.00439453125,True
+TC,clustal vs mafft,1.0,0.001953125,0.005859375,True
+TC,clustal vs muscle,36.0,0.85009765625,0.85009765625,False
+TC,mafft vs muscle,7.0,0.00927734375,0.0185546875,True

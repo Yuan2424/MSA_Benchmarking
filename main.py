@@ -6,6 +6,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from friedman import analyze_metric
+from wilcoxon import run_posthoc
 
 REFERENCE_DIR = Path("References")
 
@@ -127,6 +128,8 @@ def main():
         print(f"Chi-square : {results['friedman_chi2']:.4f}")
         print(f"P-value    : {results['pvalue']:.6f}")
         print(f"Kendall's W: {results['kendalls_w']:.4f}")
+
+    run_posthoc()
 
     """One time runs
 
